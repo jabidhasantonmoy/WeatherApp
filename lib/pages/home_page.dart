@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import '../providers/weather_provider.dart';
 
 class HomePage extends StatefulWidget {
   static const routeName = '/homePage';
@@ -9,6 +12,20 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  late WeatherProvider weatherProvider;
+  bool isLoading = true;
+  @override
+  void didChangeDependencies() {
+    weatherProvider = Provider.of<WeatherProvider>(context);
+    weatherProvider.getData();
+    if (weatherProvider.hasDataLoaded) {
+      setState(() {
+        isLoading = false;
+      });
+    }
+    super.didChangeDependencies();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -35,7 +52,14 @@ class _HomePageState extends State<HomePage> {
           ),
         ],
       ),
-      body: Container(),
+      body: Center(
+        child: isLoading
+            ? const CircularProgressIndicator()
+            : Container(
+                child: Text(weatherProvider.currentWeatherResponse!.main!.temp!
+                    .toString()),
+              ),
+      ),
     );
   }
 }
