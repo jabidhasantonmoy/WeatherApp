@@ -11,6 +11,8 @@ class WeatherProvider extends ChangeNotifier {
   double latitude = 0.0;
   double longitude = 0.0;
   String tempUnit = metric;
+  String tempUnitSymbol = celsius;
+  String timePattern = timePatternAmPm;
 
   void getData() {
     _getCurrentWeatherData();

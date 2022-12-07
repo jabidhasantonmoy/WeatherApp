@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../custom_widgets/weather_section.dart';
 import '../providers/weather_provider.dart';
 
 class HomePage extends StatefulWidget {
@@ -30,6 +31,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.black,
         elevation: 0,
         title: const Text(
           'Weather App',
@@ -52,13 +54,19 @@ class _HomePageState extends State<HomePage> {
           ),
         ],
       ),
-      body: Center(
-        child: isLoading
-            ? const CircularProgressIndicator()
-            : Container(
-                child: Text(weatherProvider.currentWeatherResponse!.main!.temp!
-                    .toString()),
-              ),
+      body: Container(
+        decoration: const BoxDecoration(
+          color: Colors.black,
+        ),
+        child: Center(
+          child: isLoading
+              ? const CircularProgressIndicator()
+              : ListView(
+                  children: [
+                    currentWeatherSection(weatherProvider),
+                  ],
+                ),
+        ),
       ),
     );
   }
