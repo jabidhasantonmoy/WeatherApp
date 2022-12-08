@@ -73,3 +73,55 @@ Widget currentWeatherSection(WeatherProvider weatherProvider) {
     ),
   );
 }
+
+Widget forecastWeatherSection(WeatherProvider weatherProvider) {
+  final forecastList = weatherProvider.forecastWeatherResponse!.list!;
+  return SizedBox(
+    height: 200,
+    child: ListView.builder(
+      shrinkWrap: true,
+      scrollDirection: Axis.horizontal,
+      itemCount: forecastList.length,
+      itemBuilder: (context, index) {
+        final item = forecastList[index];
+        return Container(
+          alignment: Alignment.center,
+          margin: const EdgeInsets.all(8),
+          padding: const EdgeInsets.all(8),
+          width: 150,
+          height: 250,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(12),
+            color: Colors.black26,
+          ),
+          child: Center(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  getFormattedDate(item.dt!,
+                      pattern: 'EEE ${weatherProvider.timePattern}'),
+                  style: txtColorWhiteFont16Normal,
+                ),
+                Image.network(
+                  '$iconPrefix${item.weather![0].icon}$iconSuffix',
+                  width: 40,
+                  height: 40,
+                ),
+                Text(
+                  '${item.main!.tempMax!.round()}/${item.main!.tempMin!.round()}$degree${weatherProvider.tempUnitSymbol}',
+                  style: txtColorWhiteFont16Normal,
+                ),
+                Text(
+                  item.weather![0].description!,
+                  style: txtColorWhiteFont16Normal,
+                  textAlign: TextAlign.center,
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    ),
+  );
+}

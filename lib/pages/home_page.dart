@@ -15,15 +15,20 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   late WeatherProvider weatherProvider;
   bool isLoading = true;
+  bool calledOnce = true;
+
   @override
   void didChangeDependencies() {
-    weatherProvider = Provider.of<WeatherProvider>(context);
-    weatherProvider.getData();
+    if (calledOnce) {
+      weatherProvider = Provider.of<WeatherProvider>(context);
+      weatherProvider.getData();
+    }
     if (weatherProvider.hasDataLoaded) {
       setState(() {
         isLoading = false;
       });
     }
+    calledOnce = false;
     super.didChangeDependencies();
   }
 
@@ -64,6 +69,7 @@ class _HomePageState extends State<HomePage> {
               : ListView(
                   children: [
                     currentWeatherSection(weatherProvider),
+                    forecastWeatherSection(weatherProvider),
                   ],
                 ),
         ),
